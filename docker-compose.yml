@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=lax
+    ports:
+        - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - back-tier
+
+  redis:
+    image: redis:4.0-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - back-tier
+
+volumes:
+  static:
+  db-data:
+
+networks:
+  back-tier:
