@@ -1,0 +1,75 @@
+-- This file has been generated from package.yaml by hpack version 0.28.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: bcef8b27ca81671237c0fec9439c9cbbf09dac247494a0c14bc6cb93e66d1ad7
+
+name:           lax
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/lax#readme>
+homepage:       https://github.com/githubuser/lax#readme
+bug-reports:    https://github.com/githubuser/lax/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2018 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+extra-source-files:
+    ChangeLog.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/lax
+
+library
+  exposed-modules:
+      Lax.DB
+  other-modules:
+      Paths_lax
+    , Lax.DB.Models
+    , Lax.DB.Types
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , text
+    , bytestring
+    , containers
+    , hedis
+    , mtl
+    , monad-logger
+    , bcrypt
+    , persistent
+    , persistent-template
+    , persistent-postgresql
+    , postgresql-simple
+    , scotty
+  default-language: Haskell2010
+
+executable lax-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_lax
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , lax
+  default-language: Haskell2010
+
+test-suite lax-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_lax
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , lax
+  default-language: Haskell2010
