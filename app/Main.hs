@@ -1,4 +1,6 @@
 module Main where
 
+import qualified Lax.Web as L
+
 main :: IO ()
-main = undefined
+main = L.main

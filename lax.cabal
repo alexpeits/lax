@@ -27,6 +27,8 @@ source-repository head
 library
   exposed-modules:
       Lax.DB
+    , Lax.Config
+    , Lax.Web
   other-modules:
       Paths_lax
     , Lax.DB.Models
@@ -46,6 +48,7 @@ library
     , persistent-template
     , persistent-postgresql
     , postgresql-simple
+    , resource-pool
     , scotty
   default-language: Haskell2010
 
