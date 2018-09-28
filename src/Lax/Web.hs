@@ -39,6 +39,7 @@ runAppWithDbPool p = do
     scottyT 25000 r app
 
 main :: IO ()
+-- main = runStderrLoggingT $ withPostgresqlPool connString 10 runAppWithDbPool
 main = runStderrLoggingT $ withPostgresqlPool connString 10 $ \p -> do
   liftIO $ runSqlPool initDB p
   runAppWithDbPool p

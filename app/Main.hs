@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import qualified Lax.Web as L
 
 main :: IO ()
-main = someFunc
+main = L.main

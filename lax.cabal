@@ -55,6 +55,8 @@ library
     , resource-pool
     , scotty
     , yaml
+    , resource-pool
+    , scotty
   default-language: Haskell2010
 
 executable lax-exe
