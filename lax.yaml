@@ -1,0 +1,10 @@
+POSTGRES:
+  host: "localhost"
+  port: 5432
+  db: "lax"
+  user: "postgres"
+  password: "pass"
+
+WEB_SERVER:
+  host: "localhost"
+  port: 25000
