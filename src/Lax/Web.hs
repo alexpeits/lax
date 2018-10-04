@@ -3,7 +3,7 @@ module Lax.Web where
 
 import qualified Data.Text.Lazy as T
 
-import Control.Monad.Reader (runReaderT, asks)
+import Control.Monad.Reader
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans (MonadTrans, lift)
 import Control.Monad.Logger (runStderrLoggingT, runNoLoggingT)
@@ -14,16 +14,30 @@ import Database.Persist.Sql (ConnectionPool)
 
 import Web.Scotty.Trans
 
+import qualified Network.HTTP.Types.Status as HTTPStatus
+
 import Lax.Config
 import Lax.DB (connString, initDB)
 import Lax.DB.Models (Key(..))
 
+import Control.Exception
+
 
 app :: (MonadIO m) => ScottyT T.Text (ConfigM m) ()
-app =
+app = do
+  defaultHandler $ \x -> do
+    status HTTPStatus.notFound404
+    text x
+  get "/test" $ do
+    liftIO $ putStrLn "/test"
+    liftAndCatchIO $ throw DivideByZero
+    liftIO $ putStrLn "run?"
   get "/" $ do
     user <- runDB $ P.get (UserKey 1)
     html $ "hello, " `T.append` T.pack (show user)
+  notFound $ do
+    liftIO $ putStrLn "not found"
+    finish
 
 runDB :: (Monad m, MonadTrans t, MonadIO (t (ConfigM m))) => SqlPersistT IO a -> t (ConfigM m) a
 runDB query = do
@@ -43,3 +57,8 @@ main :: IO ()
 main = runStderrLoggingT $ withPostgresqlPool connString 10 $ \p -> do
   liftIO $ runSqlPool initDB p
   runAppWithDbPool p
+
+newtype AppM a = AppM
+  { unAppM :: ReaderT Config IO a
+  } deriving (Functor, Applicative, Monad
+             MonadIO, MonadReader Config)

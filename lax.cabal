@@ -54,6 +54,7 @@ library
     , raw-strings-qq
     , resource-pool
     , scotty
+    , http-types
     , yaml
     , resource-pool
     , scotty
