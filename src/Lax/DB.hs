@@ -3,10 +3,14 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE DeriveGeneric #-}
 module Lax.DB where
 
+import Data.Text.Lazy (Text, toStrict)
 import Data.ByteString (ByteString)
 import Text.RawString.QQ
+
+import Data.Text.Encoding (encodeUtf8)
 
 import Control.Monad.Reader (ReaderT)
 import Control.Monad.IO.Class (liftIO)
@@ -16,6 +20,8 @@ import Crypto.BCrypt (hashPasswordUsingPolicy, fastBcryptHashingPolicy, slowerBc
 
 import Database.Persist
 import Database.Persist.Postgresql
+
+import Data.Aeson
 
 import Lax.DB.Models
 
@@ -64,8 +70,12 @@ initDB = runMigration migrateAll
 
 -- security
 -- NOTE: using fast policy ONLY for development
-hashPassword :: ByteString -> IO (Maybe ByteString)
-hashPassword = hashPasswordUsingPolicy fastBcryptHashingPolicy
+hashPassword :: Text -> IO (Maybe ByteString)
+hashPassword = hashPasswordUsingPolicy fastBcryptHashingPolicy . encodeUtf8 . toStrict
 
 -- database interaction
 -- addUser :: 
+
+instance ToJSON User where
+  toJSON (User un em _) =
+    object ["username" .= un, "email" .= em]

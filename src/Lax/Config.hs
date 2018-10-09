@@ -1,8 +1,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module Lax.Config
   (
-    AppConfig(..)
-  , ConfigM (runConfigM)
+    Config(..)
   , readConfig
   ) where
 
@@ -10,16 +9,11 @@ import Control.Monad.Reader
 
 import Database.Persist.Sql (ConnectionPool)
 
-import Lax.Config.Types (Config)
+import qualified Lax.Config.Types as AppConfig
 import Lax.Config.File (readConfig)
 
 
-data AppConfig = AppConfig
+data Config = MkConfig
   { pool :: ConnectionPool
-  , conf :: Config
+  , conf :: AppConfig.Config
   }
-
-newtype ConfigM m a = ConfigM
-  { runConfigM :: ReaderT AppConfig m a
-  } deriving (Applicative, Functor, Monad,
-             MonadIO, MonadReader AppConfig)

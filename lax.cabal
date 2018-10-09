@@ -42,6 +42,7 @@ library
     , text
     , bytestring
     , filepath
+    , aeson
     , containers
     , hedis
     , mtl
@@ -58,6 +59,11 @@ library
     , yaml
     , resource-pool
     , scotty
+    , wai
+    , hspec
+    , hspec-wai
+    , QuickCheck
+    , quickcheck-instances
   default-language: Haskell2010
 
 executable lax-exe
@@ -83,4 +89,8 @@ test-suite lax-test
   build-depends:
       base >=4.7 && <5
     , lax
+    , hspec
+    , QuickCheck
+    , quickcheck-instances
   default-language: Haskell2010
+  build-tool-depends: hspec-discover:hspec-discover
